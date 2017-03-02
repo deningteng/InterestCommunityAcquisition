@@ -7,15 +7,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class UserTopicDiversity {
-	
+	//id list of all users
 	private String[] ids;
+	//topic probability vector of users
 	private double[][] vectors;
+	//topic diversity between users
 	private double[][] topicDiversityMaxtrix;
 	
 	public UserTopicDiversity(){
 		
 	}
-	
+	/**
+	 * load user_topic matrix from files
+	 * @param dir
+	 */
 	public void vectorLoad(String dir){
 		 try {
 			FileReader reader = new FileReader(dir);
@@ -52,6 +57,11 @@ public class UserTopicDiversity {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * calculate vector length
+	 * @param vector
+	 * @return
+	 */
 	public double vectorLength(double[] vector){
 		double vectorLength=0.0;
 		for(double value:vector){
@@ -61,6 +71,11 @@ public class UserTopicDiversity {
 		return vectorLength;
 	}
 	
+	/**
+	 * normalization of vector
+	 * @param vector
+	 * @return
+	 */
 	public double[] normalization(double[] vector){
 		double vectorLength=vectorLength(vector);
 		double[] normalization=new double[vector.length];
@@ -70,6 +85,12 @@ public class UserTopicDiversity {
 		return normalization;
 	}
 	
+	/**
+	 * calculate the average of two vectors
+	 * @param v1
+	 * @param v2
+	 * @return
+	 */
 	public double[] vectorsAverage(double[] v1,double[] v2){
 		double[] average=new double[v1.length];
 		for(int index=0;index<v1.length;index++){
@@ -77,7 +98,12 @@ public class UserTopicDiversity {
 		}
 		return average;
 	}
-	
+	/**
+	 * calcualte KL Divergence of two vectors
+	 * @param v1
+	 * @param v2
+	 * @return
+	 */
 	public double klDivergence(double[] v1,double[] v2){
 		double klDivergence=0.0;
 		for(int index=0;index<v1.length;index++){
@@ -86,6 +112,12 @@ public class UserTopicDiversity {
 		return klDivergence;
 	}
 	
+	/**
+	 * calculate JS Divergence of two vectors
+	 * @param v1
+	 * @param v2
+	 * @return
+	 */
 	public double jensenShannonDivergence(double[] v1,double[] v2){
 		v1=normalization(v1);
 		v2=normalization(v2);
@@ -94,7 +126,11 @@ public class UserTopicDiversity {
 		jsDivergence=(klDivergence(v1,average)+klDivergence(v2,average))/2;
 		return jsDivergence;
 	}
-	
+	/**
+	 * Get distances between users
+	 * @param vectors
+	 * @return
+	 */
 	public double[][] getUserTopicDiversity(double[][] vectors){
 		int num=vectors.length;
 		topicDiversityMaxtrix=new double[num][];

@@ -35,7 +35,7 @@ public class TestCase {
 		communityAcquisition.setKmeansConfiguration(10, 0.00000000000001, 500);
 		communityAcquisition.Kmeans();
 		OutputTwoDimensionalArray outputArray1=
-				new OutputTwoDimensionalArray(".\\result\\outputTwocommunityCenters.txt",communityAcquisition.getCenters());
+				new OutputTwoDimensionalArray(".\\result\\outputCommunityCenters.txt",communityAcquisition.getCenters());
 		outputArray1.getOutput();
 		for(String[] cluster:communityAcquisition.getClusterResult()){
 			System.out.println(cluster.length);

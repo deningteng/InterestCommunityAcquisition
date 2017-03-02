@@ -6,15 +6,21 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class CommunityAcquisition {
-	
+	//id list of all users
 	private String[] idList;
+	//user topic probability vectors
 	private double[][] vectors;
+	//num of topic 
 	private int k;
+	//the largest diversity of cluster centers in last program of iteration
 	private double mu;
+	//the largest times of number
 	private int iterationNum;
-	
+	//the result of cluster,the values present index in idList
 	private int[][] clusterResult;
-	boolean criticism=true;// 是否停止迭代
+	//check out whether or not to continue iteration
+	boolean criticism=true;
+	//the centers of cluster,the values present topic probability of communities
 	double[][] centerVectors;
 	
 	public CommunityAcquisition(){
@@ -25,6 +31,7 @@ public class CommunityAcquisition {
 		this.idList=idList;
 		this.vectors=vectors;
 	}
+	//set configuration value of kmeans
 	public void setKmeansConfiguration(int k, double mu,int iterationNum){
 		this.k=k;
 		this.mu=mu;
@@ -79,7 +86,7 @@ public class CommunityAcquisition {
 	public double getDist(double[] v1,double[] v2){
 		return Math.sqrt(2*jensenShannonDivergence(v1,v2));
 	}
-	
+	//Get the index of min value in array
 	public int getMinIndex(double[] arr){  
 	    int minIndex = 0;  
 	    for(int i=0; i<arr.length; i++){  
@@ -89,7 +96,7 @@ public class CommunityAcquisition {
 	    }  
 	    return minIndex;  
 	}  
-	
+	//init cluster centers
 	private void iniCenter(){
 		int pointNum=idList.length;
 		int[] centers=new int[k];
@@ -136,7 +143,7 @@ public class CommunityAcquisition {
 		}
 		System.out.println("Kmeans done!");
 	}
-	
+	//Judge whether or not to stop iteration 
 	public void criticism(double[][] newCenter){
 		double[] dist=new double[k];
 		for(int index=0;index<k;index++){
@@ -152,7 +159,10 @@ public class CommunityAcquisition {
 			criticism=false;
 		}
 	}
-	
+	/**
+	 * update clusters and cluster centers
+	 * @return
+	 */
 	public double[][] updateCluster(){
 		int pointNum=idList.length;
 		double[][] newCenter=new double[k][];
@@ -194,7 +204,7 @@ public class CommunityAcquisition {
 		}
 		return vector;
 	}
-	
+	//get the cluster result ,the values represent user id in each community
 	public String[][] getClusterResult(){
 		String[][] clusterList=new String[k][];
 		for(int index=0;index<k;index++){
