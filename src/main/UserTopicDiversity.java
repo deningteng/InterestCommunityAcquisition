@@ -41,6 +41,7 @@ public class UserTopicDiversity {
 				}
 				vectorsList.add(vector);
 			}
+			br.close();
 			ids=new String[idList.size()];
 			vectors=new double[vectorsList.size()][];
 			for(int index=0;index<idList.size();index++){
@@ -99,7 +100,7 @@ public class UserTopicDiversity {
 		return average;
 	}
 	/**
-	 * calcualte KL Divergence of two vectors
+	 * Calculate KL Divergence of two vectors
 	 * @param v1
 	 * @param v2
 	 * @return
@@ -127,7 +128,7 @@ public class UserTopicDiversity {
 		return jsDivergence;
 	}
 	/**
-	 * Get distances between users
+	 * Get distances between all users
 	 * @param vectors
 	 * @return
 	 */
@@ -138,16 +139,23 @@ public class UserTopicDiversity {
 			double[] values=new double[num];
 			for(int index2=0;index2<num;index2++){
 				values[index2]=Math.sqrt(2*jensenShannonDivergence(vectors[index1],vectors[index2]));
+				values[index2]=Math.exp(-values[index2]);
 			}
 			topicDiversityMaxtrix[index1]=values;
 		}
 		return topicDiversityMaxtrix;
 	}
-	
+	/**
+	 * Get all user id
+	 * @return
+	 */
 	public String[] getIdList(){
 		return ids;
 	}
-	
+	/**
+	 * User's topic probability distribution
+	 * @return user_num*topic_num
+	 */
 	public double[][] getVectors(){
 		return vectors;
 	}

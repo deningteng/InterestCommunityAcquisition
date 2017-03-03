@@ -1,5 +1,6 @@
 package test;
 
+import main.Community;
 import main.CommunityAcquisition;
 import main.UserTopicDiversity;
 
@@ -34,11 +35,13 @@ public class TestCase {
 		CommunityAcquisition communityAcquisition=new CommunityAcquisition(idList,vectors);
 		communityAcquisition.setKmeansConfiguration(10, 0.00000000000001, 500);
 		communityAcquisition.Kmeans();
-		OutputTwoDimensionalArray outputArray1=
+		OutputTwoDimensionalArray communityCenters=
 				new OutputTwoDimensionalArray(".\\result\\outputCommunityCenters.txt",communityAcquisition.getCenters());
-		outputArray1.getOutput();
-		for(String[] cluster:communityAcquisition.getClusterResult()){
-			System.out.println(cluster.length);
+		communityCenters.getOutput();
+		for(int index=0;index<communityAcquisition.getClusterResult().length;index++){
+			System.out.println(communityAcquisition.getClusterResult()[index].length);
 		}
+		Community[] communities=communityAcquisition.outputCommunities(0.3);
+		System.out.println("done ;"+communities.length);
 	}
 }

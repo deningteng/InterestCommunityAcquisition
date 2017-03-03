@@ -29,7 +29,7 @@ public class OutputTwoDimensionalArray {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} // 创建新文件  
+		} 
         
 	}
 }
