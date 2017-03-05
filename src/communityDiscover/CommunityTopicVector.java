@@ -1,4 +1,4 @@
-package main;
+package communityDiscover;
 /**
  * Structure of representative topic vector
  * @author 15754

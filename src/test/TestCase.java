@@ -1,8 +1,8 @@
 package test;
 
-import main.Community;
-import main.CommunityAcquisition;
-import main.UserTopicDiversity;
+import communityDiscover.Community;
+import communityDiscover.CommunityAcquisition;
+import communityDiscover.UserTopicDiversity;
 
 public class TestCase {
 	
