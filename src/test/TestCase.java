@@ -3,6 +3,7 @@ package test;
 import communityDiscover.Community;
 import communityDiscover.CommunityAcquisition;
 import communityDiscover.UserTopicDiversity;
+import userInfluenceAcquisition.UserTransfer;
 
 public class TestCase {
 	
@@ -43,5 +44,8 @@ public class TestCase {
 		}
 		Community[] communities=communityAcquisition.outputCommunities(0.3);
 		System.out.println("done ;"+communities.length);
+		UserTransfer userTransfer=new UserTransfer(communities[0],"H:\\SMPData\\Weibo.Corpus\\weibo_follows.csv");
+		double[][] userTransferMaxtrix=userTransfer.getUserTransferMaxtrix();
+		System.out.println("user transfer matrix done :"+userTransferMaxtrix.length);
 	}
 }
