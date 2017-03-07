@@ -111,7 +111,10 @@ public class MultiUserTransfer {
             }  
         }  
 	}
-	
+	/**
+	 * Get all communities user transfer matrix
+	 * @return
+	 */
 	public double[][][] getMultiUserTransfer(){
 		int communityNum=communities.length;
 		double[][][] multiUserTransferMatrix=new double[communityNum][][];
