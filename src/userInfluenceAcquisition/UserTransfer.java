@@ -69,7 +69,7 @@ public class UserTransfer {
 				}else{
 					double num=getCommonFollowersNum(index1,index2);
 					if(num!=0){
-						weight[index1][index2]=map.get(userid[index1]).size()/num;
+						weight[index1][index2]=num/map.get(userid[index1]).size();
 					}else{
 						weight[index1][index2]=0.0;
 					}
