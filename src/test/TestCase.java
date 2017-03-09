@@ -1,15 +1,22 @@
 package test;
 
+import java.util.logging.Logger;
 import communityDiscover.Community;
 import communityDiscover.CommunityAcquisition;
 import communityDiscover.UserTopicDiversity;
+import userInfluenceAcquisition.InfluenceRankAcquisition;
 import userInfluenceAcquisition.MultiUserTransfer;
+import userInfluenceAcquisition.UserInfluenceScore;
 
 public class TestCase {
 	
+	static String strClassName = TestCase.class.getName();  
+    static Logger logger = Logger.getLogger(strClassName);
+	
 	public static void main(String[] args){
 //		testLoadUserTopicVectors();
-		testUserTopicDiversity();
+//		testUserTopicDiversity();
+		testUserTransferMatrixCalculation();
 
 	}
 	
@@ -62,10 +69,13 @@ public class TestCase {
 		for(int index=0;index<communityAcquisition.getClusterResult().length;index++){
 			System.out.println(communityAcquisition.getClusterResult()[index].length);
 		}
+		logger.info("community cluster done");
 		Community[] communities=communityAcquisition.outputCommunities(0.3);
 		System.out.println("done ;"+communities.length);
 		MultiUserTransfer userTransfer=new MultiUserTransfer(communities,idList,"G:\\weibodata");
 		double[][][] userTransferMaxtrix=userTransfer.getMultiUserTransfer();
 		System.out.println("user transfer matrix done :"+userTransferMaxtrix.length);
+		InfluenceRankAcquisition ira=new InfluenceRankAcquisition(communities,userTransferMaxtrix);
+		UserInfluenceScore[][] uis=ira.getInfluenceRank(10);
 	}
 }
