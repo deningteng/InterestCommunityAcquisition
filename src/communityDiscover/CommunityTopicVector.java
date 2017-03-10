@@ -5,6 +5,7 @@ package communityDiscover;
  *
  */
 public class CommunityTopicVector {
+	//The topic id start from 0
 	private int topicid;
 	private double representation;
 	//Representative topic vector,number of dimension is equal to the count of users in community

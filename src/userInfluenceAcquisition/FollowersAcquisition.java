@@ -31,6 +31,8 @@ public class FollowersAcquisition implements Callable<Map<String,ArrayList<Strin
 	}
 	
 	private void getFollowers(String filePath){
+		
+		
 		FileReader reader;
 		try {
 			reader = new FileReader(filePath);
@@ -56,9 +58,10 @@ public class FollowersAcquisition implements Callable<Map<String,ArrayList<Strin
 				br.close();
 				reader.close();
 			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+			} 
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

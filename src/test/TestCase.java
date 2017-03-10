@@ -6,6 +6,7 @@ import communityDiscover.CommunityAcquisition;
 import communityDiscover.UserTopicDiversity;
 import userInfluenceAcquisition.InfluenceRankAcquisition;
 import userInfluenceAcquisition.MultiUserTransfer;
+import userInfluenceAcquisition.OutputUserInfluenceResult;
 import userInfluenceAcquisition.UserInfluenceScore;
 
 public class TestCase {
@@ -77,5 +78,8 @@ public class TestCase {
 		System.out.println("user transfer matrix done :"+userTransferMaxtrix.length);
 		InfluenceRankAcquisition ira=new InfluenceRankAcquisition(communities,userTransferMaxtrix);
 		UserInfluenceScore[][] uis=ira.getInfluenceRank(10);
+		
+		OutputUserInfluenceResult ouir=new OutputUserInfluenceResult(communities,uis,".\\result");
+		ouir.getOutput();
 	}
 }
