@@ -294,18 +294,14 @@ public class CommunityAcquisition {
 	/**
 	 * Get user similarity between each other user_num*user_num
 	 */
-	public double[][] getUserSimilarityMatrix(double[][] vectors){
-		int num=vectors.length;
-		double[][] userSimilarityMatrix=new double[num][];
-		for(int index1=0;index1<num;index1++){
-			double[] values=new double[num];
-			for(int index2=0;index2<num;index2++){
-				values[index2]=Math.sqrt(2*jensenShannonDivergence(vectors[index1],vectors[index2]));
-				values[index2]=Math.exp(-values[index2]);
-			}
-			userSimilarityMatrix[index1]=values;
-		}
-		return userSimilarityMatrix;
+	public double getUserSimilarity(double[][] vectors,int index1,int index2){
+		
+		double values=0.0;
+
+		values=Math.sqrt(2*jensenShannonDivergence(vectors[index1],vectors[index2]));
+		values=Math.exp(-values);
+
+		return values;
 	}
 	/**
 	 * After Kmeans, get community info from cluster result
@@ -313,7 +309,7 @@ public class CommunityAcquisition {
 	 * @return communities
 	 */
 	public Community[] outputCommunities(double threshold){
-		double[][] userSimilarityMatrix=getUserSimilarityMatrix(vectors);
+		
 		String[][] clusterResultWithUserid=getClusterResult();
 		Community[] communities=new Community[centerVectors.length];
 		//Get info for each community
@@ -326,7 +322,7 @@ public class CommunityAcquisition {
 			double[][] communityUserSimilarity=new double[list.length][list.length];
 			for(int term1=0 ;term1<list.length;term1++){
 				for(int term2=0 ;term2<list.length;term2++){
-					communityUserSimilarity[term1][term2]=userSimilarityMatrix[list[term1]][term2];
+					communityUserSimilarity[term1][term2]=getUserSimilarity(vectors,list[term1],list[term2]);
 				}
 			}
 			community.setCommunityUserSimilarity(communityUserSimilarity);

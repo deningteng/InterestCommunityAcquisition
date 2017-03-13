@@ -41,15 +41,13 @@ public class FollowersAcquisition implements Callable<Map<String,ArrayList<Strin
 			try {
 				int index=0;
 				while((str = br.readLine()) != null) {
-					if(index!=0){
-						//[userid,followerid]
-						String[] weiboFollowers=str.split(",");
-						boolean flag=true;
-						for(int index1=0;index1<allUserList.length&&flag;index1++){
-							if(allUserList[index1].equals(weiboFollowers[0])){
-								map.get(allUserList[index1]).add(weiboFollowers[1]);
-								flag=false;
-							}
+					//[userid,followerid]
+					String[] weiboFollowers=str.split(",");
+					boolean flag=true;
+					for(int index1=0;index1<allUserList.length&&flag;index1++){
+						if(allUserList[index1].equals(weiboFollowers[0])){
+							map.get(allUserList[index1]).add(weiboFollowers[1]);
+							flag=false;
 						}
 					}
 					System.out.println(filePath+" read lines:"+index);

@@ -61,6 +61,7 @@ public class TestCase {
 		userTopicDiversity.vectorLoad(directory);
 		double[][] vectors=userTopicDiversity.getVectors();
 		String[] idList=userTopicDiversity.getIdList();
+		userTopicDiversity=null;
 		CommunityAcquisition communityAcquisition=new CommunityAcquisition(idList,vectors);
 		communityAcquisition.setKmeansConfiguration(10, 0.00000000000001, 500);
 		communityAcquisition.Kmeans();
@@ -72,9 +73,11 @@ public class TestCase {
 		}
 		logger.info("community cluster done");
 		Community[] communities=communityAcquisition.outputCommunities(0.3);
+		communityAcquisition=null;
 		System.out.println("done ;"+communities.length);
-		MultiUserTransfer userTransfer=new MultiUserTransfer(communities,idList,"G:\\weibodata");
+		MultiUserTransfer userTransfer=new MultiUserTransfer(communities,idList,"F:\\Git Repository\\weibo");
 		double[][][] userTransferMaxtrix=userTransfer.getMultiUserTransfer();
+		userTransfer=null;
 		System.out.println("user transfer matrix done :"+userTransferMaxtrix.length);
 		InfluenceRankAcquisition ira=new InfluenceRankAcquisition(communities,userTransferMaxtrix);
 		UserInfluenceScore[][] uis=ira.getInfluenceRank(10);
