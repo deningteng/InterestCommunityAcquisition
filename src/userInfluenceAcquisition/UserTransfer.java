@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import communityDiscover.Community;
 
@@ -19,6 +20,8 @@ public class UserTransfer {
 	private Map<String,ArrayList<String>> map;
 	//id of users in the community
 	private String[] userid;
+	private static String strClassName = UserTransfer.class.getName();  
+    private static Logger logger = Logger.getLogger(strClassName);
 	
 	public UserTransfer(Community community,String dir){
 		this.community=community;
@@ -29,6 +32,7 @@ public class UserTransfer {
 	 * @param userid
 	 */
 	private void initWeiboUser(String[] userid){
+		logger.info("initWeiboUser");
 		map=new HashMap<String,ArrayList<String>>();
 		for(String id:userid){
 			map.put(id, new ArrayList<String>());
@@ -41,6 +45,7 @@ public class UserTransfer {
 	 * @return
 	 */
 	private int getCommonFollowersNum(int index1,int index2){
+		logger.info("getCommonFollowersNum");
 		int num=0;
 		ArrayList<String> list1=map.get(userid[index1]);
 		ArrayList<String> list2=map.get(userid[index2]);
@@ -60,6 +65,7 @@ public class UserTransfer {
 	 * @return
 	 */
 	private double[][] calcualteWeight(){
+		logger.info("calcualteWeight");
 		int userNum=map.size();
 		double[][] weight=new double[userNum][userNum];
 		for(int index1=0 ;index1<userNum;index1++){
@@ -84,6 +90,7 @@ public class UserTransfer {
 	 * @return
 	 */
 	private double[][] getWeight(){
+		logger.info("getWeight");
 		userid=community.getUserid();
 		initWeiboUser(userid);
 		FileReader reader;
@@ -126,6 +133,7 @@ public class UserTransfer {
 	 * @return user transfer matrix
 	 */
 	public double[][] getUserTransferMaxtrix(){
+		logger.info("getUserTransferMaxtrix");
 		int num=community.getUserid().length;
 		double[][] userTransferMaxtrix=new double[num][num];
 		double[][] weight=getWeight();

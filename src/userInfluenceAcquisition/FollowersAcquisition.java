@@ -8,12 +8,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.logging.Logger;
 
 public class FollowersAcquisition implements Callable<Map<String,ArrayList<String>>>{
 
 	private Map<String,ArrayList<String>> map;
 	private String[] allUserList ;
 	private String filePath;
+	private static String strClassName = FollowersAcquisition.class.getName();  
+    private static Logger logger = Logger.getLogger(strClassName);
 	
 	public FollowersAcquisition(String[] allUserList,String filePath){
 		this.allUserList=allUserList;
@@ -24,6 +27,7 @@ public class FollowersAcquisition implements Callable<Map<String,ArrayList<Strin
 	 * @param userid
 	 */
 	private void initWeiboUser(String[] allUserid){
+		logger.info("initWeiboUser");
 		map=new HashMap<String,ArrayList<String>>();
 		for(String id:allUserid){
 			map.put(id, new ArrayList<String>());
@@ -32,7 +36,7 @@ public class FollowersAcquisition implements Callable<Map<String,ArrayList<Strin
 	
 	private void getFollowers(String filePath){
 		
-		
+		logger.info("getFollowers");
 		FileReader reader;
 		try {
 			reader = new FileReader(filePath);
@@ -66,6 +70,7 @@ public class FollowersAcquisition implements Callable<Map<String,ArrayList<Strin
 	}
 	@Override
 	public Map<String, ArrayList<String>> call() throws Exception {
+		logger.info("call");
 		initWeiboUser(allUserList);
 		getFollowers(filePath);
 		return map;

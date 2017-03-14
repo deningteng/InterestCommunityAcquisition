@@ -1,5 +1,7 @@
 package userInfluenceAcquisition;
 
+import java.util.logging.Logger;
+
 import communityDiscover.Community;
 /**
  * Obtain top n influence score user in community 
@@ -9,6 +11,8 @@ import communityDiscover.Community;
 public class InfluenceRankAcquisition {
 	private Community[] communities;
 	private double[][][] userTransferMaxtrix;
+	private static String strClassName = InfluenceRankAcquisition.class.getName();  
+    private static Logger logger = Logger.getLogger(strClassName);
 	
 	public InfluenceRankAcquisition(Community[] communities,double[][][] userTransferMaxtrix){
 		this.communities=communities;
@@ -20,6 +24,7 @@ public class InfluenceRankAcquisition {
 	 * @return
 	 */
 	private int getMinIndex(double[] arr){  
+		logger.info("getMinIndex");
 	    int minIndex = 0;  
 	    for(int i=0; i<arr.length; i++){  
 	        if(arr[i] < arr[minIndex]){  
@@ -34,6 +39,7 @@ public class InfluenceRankAcquisition {
 	 * @return
 	 */
 	private int getMaxIndex(double[] arr){  
+		logger.info("getMaxIndex");
 	    int maxIndex = 0;  
 	    for(int i=0; i<arr.length; i++){  
 	        if(arr[i] > arr[maxIndex]){  
@@ -49,8 +55,8 @@ public class InfluenceRankAcquisition {
 	 * @return
 	 */
 	private int[] getTopNIndex(double[] list,int topN){
+		logger.info("getTopNIndex");
 		int[] index=new int[topN];
-		double term=list[getMaxIndex(list)];
 		double min=list[getMinIndex(list)];
 		for(int index1=0;index1<topN;index1++){
 			index[index1]=getMaxIndex(list);
@@ -64,6 +70,7 @@ public class InfluenceRankAcquisition {
 	 * @return
 	 */
 	public UserInfluenceScore[][] getInfluenceRank(int topNum){
+		logger.info("getInfluenceRank");
 		int communityNum=communities.length;
 		UserInfluenceScore[][] userInfluenceScores=new UserInfluenceScore[communityNum][];
 		for(int index1=0;index1<communityNum;index1++){

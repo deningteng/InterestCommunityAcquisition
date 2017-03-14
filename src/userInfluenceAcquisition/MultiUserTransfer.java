@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.logging.Logger;
 
 import communityDiscover.Community;
 
@@ -20,6 +21,8 @@ public class MultiUserTransfer {
 	private String dir;
 	
 	private ArrayList<Map<String, ArrayList<String>>> maplist=new ArrayList<Map<String, ArrayList<String>>>();
+	private static String strClassName = MultiUserTransfer.class.getName();  
+    private static Logger logger = Logger.getLogger(strClassName);
 	
 	public MultiUserTransfer(Community[] communities,String[] allUserList,String dir){
 		this.communities=communities;
@@ -35,6 +38,7 @@ public class MultiUserTransfer {
 	 * @return
 	 */
 	private int getCommonFollowersNum(int index1,int index2,String[] userInCommunity){
+		logger.info("getCommonFollowersNum");
 		int num=0;
 		ArrayList<String> list1=new ArrayList<String>();
 		ArrayList<String> list2=new ArrayList<String>();
@@ -64,6 +68,7 @@ public class MultiUserTransfer {
 	 * @return
 	 */
 	private double[][] calcualteWeight(String[] userInCommunity){
+		logger.info("calcualteWeight");
 		int userNum=userInCommunity.length;
 		double[][] weight=new double[userNum][userNum];
 		for(int index1=0 ;index1<userNum;index1++){
@@ -94,6 +99,7 @@ public class MultiUserTransfer {
 	 * @param dir
 	 */
 	private void getFollowers(String dir){
+		logger.info("getFollowers");
 		File folder = new File(dir);
 		String[] filenames=folder.list();
 		ExecutorService exec = Executors.newCachedThreadPool();  
@@ -116,6 +122,7 @@ public class MultiUserTransfer {
 	 * @return
 	 */
 	public double[][][] getMultiUserTransfer(){
+		logger.info("getMultiUserTransfer");
 		int communityNum=communities.length;
 		double[][][] multiUserTransferMatrix=new double[communityNum][][];
 		getFollowers(dir);
@@ -127,8 +134,7 @@ public class MultiUserTransfer {
 			double[][] weights=calcualteWeight(userInCommunity);
 			for(int index2=0;index2<num;index2++){
 				for(int index3=0;index3<num;index3++){
-					userTransfer[index2][index3]=weights[index2][index3]*userSimilarity[index1][index2];
-					
+					userTransfer[index2][index3]=weights[index2][index3]*userSimilarity[index2][index3];
 				}
 			}
 			multiUserTransferMatrix[index1]=userTransfer;

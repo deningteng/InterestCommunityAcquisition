@@ -1,5 +1,7 @@
 package userInfluenceAcquisition;
 
+import java.util.logging.Logger;
+
 import communityDiscover.CommunityTopicVector;
 import utils.ProbabilityDistributionDiversity;
 /**
@@ -17,6 +19,8 @@ public class InfluenceScoreAcquisition {
 	private int iteration;
 	//deviation in iteration
 	private double deviation;
+	private static String strClassName = InfluenceScoreAcquisition.class.getName();  
+    private static Logger logger = Logger.getLogger(strClassName);
 	
 	public InfluenceScoreAcquisition(double r,double[][] userTransferMaxtrix,CommunityTopicVector[] communityTopicVector,int iteration,double deviation){
 		this.r=r;
@@ -31,6 +35,7 @@ public class InfluenceScoreAcquisition {
 	 * @return
 	 */
 	private double[] initInfluenceScore(int n){
+		logger.info("initInfluenceScore");
 		double[] influenceScore=new double[n];
 		for(int index=0;index<n;index++){
 			influenceScore[index]=1.0;
@@ -44,6 +49,7 @@ public class InfluenceScoreAcquisition {
 	 * @return
 	 */
 	private double[] forumlaCalculation(double[] influenceScore,double[] topic){
+		logger.info("forumlaCalculation");
 		double[] result=new double[influenceScore.length];
 		double[] product=new double[influenceScore.length];
 		for(int index1=0;index1<userTransferMaxtrix.length;index1++){
@@ -66,6 +72,7 @@ public class InfluenceScoreAcquisition {
 	 * @return
 	 */
 	private double[] influenceScoreIterationCalculation(double[] influenceScore,double[] topic){
+		logger.info("influenceScoreIterationCalculation");
 		boolean flag=true;
 		for(int index1=0;index1<iteration&&flag;index1++){
 			double[] temporary=forumlaCalculation(influenceScore,topic);
@@ -82,6 +89,7 @@ public class InfluenceScoreAcquisition {
 	 * @return
 	 */
 	private boolean criticism(double[] v1,double[] v2){
+		logger.info("criticism");
 		boolean flag=true;
 		ProbabilityDistributionDiversity p=new ProbabilityDistributionDiversity();
 		double diversity=p.getDiversity(v1, v2);
@@ -96,6 +104,7 @@ public class InfluenceScoreAcquisition {
 	 * @return array of influence score
 	 */
 	public double[] getInfluenceScore(){
+		logger.info("getInfluenceScore");
 		int userNum=userTransferMaxtrix.length;
 		double[] result=new double[userNum];
 		for(int index1=0;index1<communityTopicVector.length;index1++){
