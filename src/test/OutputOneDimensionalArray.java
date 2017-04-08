@@ -5,10 +5,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class OutputTwoDimensionalArray {
+public class OutputOneDimensionalArray {
 	private String dir;
-	private double[][] array;
-	public OutputTwoDimensionalArray(String dir,double[][] array){
+	private String[] array;
+	OutputOneDimensionalArray(String dir,String[] array){
 		this.dir=dir;
 		this.array=array;
 	}
@@ -18,10 +18,10 @@ public class OutputTwoDimensionalArray {
         try {
 			writename.createNewFile();
 			BufferedWriter out = new BufferedWriter(new FileWriter(writename)); 
-			for(double[] temp:array){
-				for(double value:temp){
-					out.write(value+" ");
-				}
+			for(String temp:array){
+				
+				out.write(temp+"");
+				
 				out.write("\r\n");
 			}
 	        out.flush(); 

@@ -10,6 +10,7 @@ import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
 import communityDiscover.Community;
+import test.OutputTwoDimensionalArray;
 
 
 public class MultiUserTransfer {
@@ -23,6 +24,10 @@ public class MultiUserTransfer {
 	private ArrayList<Map<String, ArrayList<String>>> maplist=new ArrayList<Map<String, ArrayList<String>>>();
 	private static String strClassName = MultiUserTransfer.class.getName();  
     private static Logger logger = Logger.getLogger(strClassName);
+    
+    private double[][][] multiUserTransferMatrix;
+    private double[][][] baseline1;//only user similarity
+    private double[][][] baseline2;//only weight
 	
 	public MultiUserTransfer(Community[] communities,String[] allUserList,String dir){
 		this.communities=communities;
@@ -38,7 +43,6 @@ public class MultiUserTransfer {
 	 * @return
 	 */
 	private int getCommonFollowersNum(int index1,int index2,String[] userInCommunity){
-		logger.info("getCommonFollowersNum");
 		int num=0;
 		ArrayList<String> list1=new ArrayList<String>();
 		ArrayList<String> list2=new ArrayList<String>();
@@ -68,15 +72,16 @@ public class MultiUserTransfer {
 	 * @return
 	 */
 	private double[][] calcualteWeight(String[] userInCommunity){
-		logger.info("calcualteWeight");
 		int userNum=userInCommunity.length;
-		double[][] weight=new double[userNum][userNum];
+		logger.info("userNum:"+userNum);
+		double[][] weight=new double[userNum][];
 		for(int index1=0 ;index1<userNum;index1++){
-			for(int index2=0;index2<userNum;index2++){
-				if(index1==index2){
+			weight[index1]=new double[userNum-index1];
+			for(int index2=0;index2<userNum-index1;index2++){
+				if(index2==0){
 					weight[index1][index2]=1.0;
 				}else{
-					double num=getCommonFollowersNum(index1,index2,userInCommunity);
+					double num=getCommonFollowersNum(index1,index2+index1,userInCommunity);
 					if(num!=0){
 						int size=0;
 						for(Map<String, ArrayList<String>> map:maplist){
@@ -90,8 +95,11 @@ public class MultiUserTransfer {
 					}
 					
 				}
+				logger.info("weight:"+weight[index1][index2]);
 			}
 		}
+		
+		logger.info("weight calculate done");
 		return weight;
 	}
 	/**
@@ -122,25 +130,43 @@ public class MultiUserTransfer {
 	 * @return
 	 */
 	public double[][][] getMultiUserTransfer(){
-		logger.info("getMultiUserTransfer");
+		
 		int communityNum=communities.length;
-		double[][][] multiUserTransferMatrix=new double[communityNum][][];
+		multiUserTransferMatrix=new double[communityNum][][];
+		baseline1=new double[communityNum][][];
+		baseline2=new double[communityNum][][];
 		getFollowers(dir);
 		for(int index1=0;index1<communityNum;index1++){
+			logger.info("community index:"+index1);
 			String[] userInCommunity=communities[index1].getUserid();
 			int num=userInCommunity.length;
-			double[][] userTransfer=new double[num][num];
+			double[][] userTransfer=new double[num][];
 			double[][] userSimilarity=communities[index1].getCommunityUserSimilarity();
 			double[][] weights=calcualteWeight(userInCommunity);
+			OutputTwoDimensionalArray oda=new OutputTwoDimensionalArray(".\\result\\weightBetweenUsersInCommunity"+(index1+1),weights);
+			oda.getOutput();
+			logger.info("user number:"+num);
 			for(int index2=0;index2<num;index2++){
-				for(int index3=0;index3<num;index3++){
+				userTransfer[index2]=new double[num-index2];
+				for(int index3=0;index3<num-index2;index3++){					
 					userTransfer[index2][index3]=weights[index2][index3]*userSimilarity[index2][index3];
+					logger.info("weight:"+userTransfer[index2][index3]);
 				}
 			}
+			baseline1[index1]=userSimilarity;
+			baseline2[index1]=weights;
 			multiUserTransferMatrix[index1]=userTransfer;
+			logger.info("community index:"+index1+" done");
 		}
 		
 		return multiUserTransferMatrix;
+	}
+	
+	public double[][][] getBaseline1TransferMatrix(){
+		return baseline1;
+	}
+	public double[][][] getBaseline2TransferMatrix(){
+		return baseline2;
 	}
 	
 }

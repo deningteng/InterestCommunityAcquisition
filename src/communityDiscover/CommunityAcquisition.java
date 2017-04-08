@@ -177,7 +177,7 @@ public class CommunityAcquisition {
 				centers[index-1]=num;
 				index++;
 			}
-			if(index>10){
+			if(index>k){
 				flag=false;
 			}
 			
@@ -319,10 +319,11 @@ public class CommunityAcquisition {
 			//Get all user index in community
 			int[] list=clusterResult[index1];
 			//Get user similarity each other in community
-			double[][] communityUserSimilarity=new double[list.length][list.length];
+			double[][] communityUserSimilarity=new double[list.length][];
 			for(int term1=0 ;term1<list.length;term1++){
-				for(int term2=0 ;term2<list.length;term2++){
-					communityUserSimilarity[term1][term2]=getUserSimilarity(vectors,list[term1],list[term2]);
+				communityUserSimilarity[term1]=new double[list.length-term1];
+				for(int term2=0 ;term2<list.length-term1;term2++){
+					communityUserSimilarity[term1][term2]=getUserSimilarity(vectors,list[term1],list[term2+term1]);
 				}
 			}
 			community.setCommunityUserSimilarity(communityUserSimilarity);

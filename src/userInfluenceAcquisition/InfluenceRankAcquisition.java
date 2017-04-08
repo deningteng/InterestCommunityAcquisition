@@ -3,6 +3,7 @@ package userInfluenceAcquisition;
 import java.util.logging.Logger;
 
 import communityDiscover.Community;
+import utils.SortedIndex;
 /**
  * Obtain top n influence score user in community 
  * @author 15754
@@ -58,9 +59,22 @@ public class InfluenceRankAcquisition {
 		logger.info("getTopNIndex");
 		int[] index=new int[topN];
 		double min=list[getMinIndex(list)];
+		
 		for(int index1=0;index1<topN;index1++){
-			index[index1]=getMaxIndex(list);
-			list[index[index1]]=min;
+			int term=getMaxIndex(list);
+			boolean flag=true;
+			if(index.length>0){
+				for(int index2=0;index2<index.length&&flag;index2++){
+					if(index[index2]==term){
+						flag=false;
+					}
+				}
+			}
+			if(flag){
+				index[index1]=term;
+				list[index[index1]]=min;
+			}
+			
 		}
 		return index;
 	}
@@ -78,10 +92,14 @@ public class InfluenceRankAcquisition {
 			InfluenceScoreAcquisition isa=
 					new InfluenceScoreAcquisition(0.5,userTransferMaxtrix[index1],
 							communities[index1].getCommunityTopicVectorList(),
-							1000,0.0001);
+							1000,0.001);
 			double[] scores=isa.getInfluenceScore();
-			UserInfluenceScore[]uis=new UserInfluenceScore[topNum];
-			int[] topNIndex=getTopNIndex(scores,topNum);
+			
+			topNum=userlist.length;
+			UserInfluenceScore[] uis=new UserInfluenceScore[topNum];
+			SortedIndex si=new SortedIndex(scores);
+			si.getSorted();
+			int[] topNIndex=si.getIndex();
 			for(int index2=0;index2<topNum;index2++){
 				int term=topNIndex[index2];
 				UserInfluenceScore ui=new UserInfluenceScore(userlist[term],scores[term]);

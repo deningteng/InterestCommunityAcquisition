@@ -30,7 +30,7 @@ public class InfluenceScoreAcquisition {
 		this.deviation=deviation;
 	}
 	/**
-	 * init influnece score
+	 * init influence score
 	 * @param n
 	 * @return
 	 */
@@ -54,8 +54,12 @@ public class InfluenceScoreAcquisition {
 		double[] product=new double[influenceScore.length];
 		for(int index1=0;index1<userTransferMaxtrix.length;index1++){
 			double term=0.0;
-			for(int index2=0;index2<userTransferMaxtrix[index1].length;index2++){
-				term+=r*userTransferMaxtrix[index1][index2]*topic[index2];
+			for(int index2=0;index2<userTransferMaxtrix.length;index2++){
+				if(index1>index2){
+					term+=r*userTransferMaxtrix[index2][index1-index2]*topic[index2];
+				}else{
+					term+=r*userTransferMaxtrix[index1][index2-index1]*topic[index2];
+				}
 			}
 			product[index1]=term;
 		}

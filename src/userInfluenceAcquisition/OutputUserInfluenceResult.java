@@ -25,7 +25,7 @@ public class OutputUserInfluenceResult {
 	public void getOutput(){
 		logger.info("getOutput");
 		for(int index1=0;index1<communities.length;index1++){
-			File writename = new File(dir+"\\community_"+(index1+1));   
+			File writename = new File(dir+"\\community_"+(index1+1)+"_InfluenceRank");   
 	        try {
 				writename.createNewFile();
 				BufferedWriter out = new BufferedWriter(new FileWriter(writename)); 
