@@ -299,7 +299,7 @@ public class CommunityAcquisition {
 		double values=0.0;
 
 		values=Math.sqrt(2*jensenShannonDivergence(vectors[index1],vectors[index2]));
-		values=Math.exp(-values);
+		values=1-values;
 
 		return values;
 	}

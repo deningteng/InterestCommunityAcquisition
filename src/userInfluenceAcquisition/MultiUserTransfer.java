@@ -28,6 +28,7 @@ public class MultiUserTransfer {
     private double[][][] multiUserTransferMatrix;
     private double[][][] baseline1;//only user similarity
     private double[][][] baseline2;//only weight
+    private double[][][] baseline3;//user similarity and user message count
 	
 	public MultiUserTransfer(Community[] communities,String[] allUserList,String dir){
 		this.communities=communities;
@@ -89,7 +90,7 @@ public class MultiUserTransfer {
 								size+=map.get(userInCommunity[index1]).size();
 							}
 						}
-						weight[index1][index2]=num/size;
+						weight[index1][index2]= Math.pow(num/size, 0.5);
 					}else{
 						weight[index1][index2]=0.0;
 					}
@@ -135,12 +136,14 @@ public class MultiUserTransfer {
 		multiUserTransferMatrix=new double[communityNum][][];
 		baseline1=new double[communityNum][][];
 		baseline2=new double[communityNum][][];
+		baseline3=new double[communityNum][][];
 		getFollowers(dir);
 		for(int index1=0;index1<communityNum;index1++){
 			logger.info("community index:"+index1);
 			String[] userInCommunity=communities[index1].getUserid();
 			int num=userInCommunity.length;
 			double[][] userTransfer=new double[num][];
+			double[][] twitterRank=new double[num][];
 			double[][] userSimilarity=communities[index1].getCommunityUserSimilarity();
 			double[][] weights=calcualteWeight(userInCommunity);
 			OutputTwoDimensionalArray oda=new OutputTwoDimensionalArray(".\\result\\weightBetweenUsersInCommunity"+(index1+1),weights);
@@ -148,18 +151,37 @@ public class MultiUserTransfer {
 			logger.info("user number:"+num);
 			for(int index2=0;index2<num;index2++){
 				userTransfer[index2]=new double[num-index2];
+				twitterRank[index2]=new double[num-index2];
 				for(int index3=0;index3<num-index2;index3++){					
 					userTransfer[index2][index3]=weights[index2][index3]*userSimilarity[index2][index3];
-					logger.info("weight:"+userTransfer[index2][index3]);
+					twitterRank[index2][index3]=
+							userSimilarity[index2][index3]*getMessageCountWeight(communities[index1],index2,index2+index3);
+					logger.info("weight:"+userTransfer[index2][index3]+","+twitterRank[index2][index3]);
 				}
 			}
 			baseline1[index1]=userSimilarity;
 			baseline2[index1]=weights;
+			baseline3[index1]=twitterRank;
 			multiUserTransferMatrix[index1]=userTransfer;
 			logger.info("community index:"+index1+" done");
 		}
 		
 		return multiUserTransferMatrix;
+	}
+	private double getMessageCountWeight(Community community,int u1,int u2){
+		double weight=0.0;
+		Map<String,Double> map=community.getUserMessagesCount();
+		String[] userlist=community.getUserid();
+		double sum=community.getMessagesCountSum();
+		double count1=map.get(userlist[u1]);
+		double count2=map.get(userlist[u2]);
+		if(sum-count1!=0){
+			weight=count2/(sum-count1);
+		}else{
+			weight=0.0;
+		}
+		
+		return weight;
 	}
 	
 	public double[][][] getBaseline1TransferMatrix(){
@@ -167,6 +189,9 @@ public class MultiUserTransfer {
 	}
 	public double[][][] getBaseline2TransferMatrix(){
 		return baseline2;
+	}
+	public double[][][] getBaseline3TransferMatrix(){
+		return baseline3;
 	}
 	
 }

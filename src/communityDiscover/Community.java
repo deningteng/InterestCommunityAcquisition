@@ -1,5 +1,7 @@
 package communityDiscover;
 
+import java.util.Map;
+
 /**
  * Structure of community
  * @author 15754
@@ -8,6 +10,8 @@ package communityDiscover;
 public class Community {
 	
 	private String[] userid;
+	private Map<String,Double> userMessagesCount;
+	private double MessagesCountSum;
 	//The representative topics vectors of community topic_num*user_num_in_community
 	private CommunityTopicVector[] communityTopicVectorList;
 	//The similarity between users in community
@@ -39,6 +43,21 @@ public class Community {
 	public void setCommunityUserSimilarity(double[][] communityUserSimilarity) {
 		this.communityUserSimilarity = communityUserSimilarity;
 	}
-	
+
+	public Map<String, Double> getUserMessagesCount() {
+		return userMessagesCount;
+	}
+
+	public void setUserMessagesCount(Map<String, Double> userMessagesCount) {
+		this.userMessagesCount = userMessagesCount;
+	}
+
+	public double getMessagesCountSum() {
+		return MessagesCountSum;
+	}
+
+	public void setMessagesCountSum(double messagesCountSum) {
+		MessagesCountSum = messagesCountSum;
+	}
 	
 }
