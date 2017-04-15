@@ -59,7 +59,7 @@ public class TestCase {
 //	}
 	
 	public static void testUserTransferMatrixCalculation(){
-		String directory="C:\\dening\\step_one_data\\50w_topic10\\document_topic.txt";
+		String directory="C:\\dening\\step_one_data\\50w_topic11\\document_topic.txt";
 		UserTopicDiversity userTopicDiversity=new UserTopicDiversity();
 		userTopicDiversity.vectorLoad(directory);
 		double[][] vectors=userTopicDiversity.getVectors();
@@ -77,7 +77,7 @@ public class TestCase {
 		logger.info("community cluster done");
 		Community[] communities=communityAcquisition.outputCommunities(0.3);
 		communityAcquisition=null;
-		ReadMessageCount rmc=new ReadMessageCount("C:\\dening\\step_one_data\\message_count_1.csv");
+		ReadMessageCount rmc=new ReadMessageCount("C:\\dening\\step_one_data\\message_count.csv");
 		rmc.getMessageCount();
 		for(int index=0;index<communities.length;index++){
 			communities[index].setUserMessagesCount(rmc.getMessageCount(communities[index].getUserid()));
